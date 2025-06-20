@@ -1,10 +1,10 @@
-[staging_servers]
+[STAGING_SERVERS]
 192.168.132.27
 
-[prod_servers]
+[PROD_SERVERS]
 192.168.132.222
 192.168.132.3
 
-[all:vars]
+[PROD_SERVERS:vars]
 ansible_user=vboxuser
 ansible_ssh_private_key_file=~/.ssh/id_ed25519
