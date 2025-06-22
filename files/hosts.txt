@@ -1,10 +1,4 @@
-[STAGING_SERVERS]
-192.168.132.27
-
 [PROD_SERVERS]
-192.168.132.222
-192.168.132.3
-
-[PROD_SERVERS:vars]
-ansible_user=vboxuser
-ansible_ssh_private_key_file=~/.ssh/id_ed25519
+linux1 ansible_host=192.168.132.27   owner=Vasya
+linux2 ansible_host=192.168.132.222  owner=Petya
+linux3 ansible_host=192.168.132.3    owner=Nikolay

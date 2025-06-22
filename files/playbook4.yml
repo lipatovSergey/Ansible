@@ -1,0 +1,33 @@
+- name: Playbook for variables lesson
+  hosts: all
+
+  vars:
+    message1: Priver
+    message2: World
+    secret: XVASFI13J
+
+  tasks:
+
+  - name: Print Secret Variable
+    debug:
+      var: secret
+
+  - debug:
+      msg: "Secretnoe slovo {{ secret }}"
+        
+  - debug:
+      msg: "Vladelec etogo servera --> {{ owner }} <--"
+
+  - set_fact: full_message="{{ message1 }} {{ message2 }} from {{ owner }}"
+
+  - debug: 
+      var: full_message
+
+  - debug: 
+      var: ansible_distribution
+
+  - shell: uptime
+    register: results
+
+  - debug:
+      var: results
