@@ -3,45 +3,50 @@
   become: yes
 
   vars:
-    source_file: ./MyWebSite/test.html
-    destin_file: /var/www/html
+    source_folder: ./html-project/
+    destin_folder: /var/www/html
 
   tasks:
   - name: Check and Print LINUX version
     debug: var=ansible_os_family
 
   - block:    #======Block for RedHat====== 
-
       - name: Install Apache Web Server RedHat
         yum: name=httpd state=latest
-
-      - name: Copy HTML page to RedHat Servers
-        copy: src={{ source_file }} dest={{ destin_file }} mode=0555
-        notify: Restart Apache RedHat
-
       - name: Start WebServer and make it enable for RedHat
         service: name=httpd state=started enabled=yes
-
-    when: ansible_os_family=="RedHat"
-
+    when: ansible_os_family == "RedHat"
 
   - block:   #=====Block for Debian=====
-
       - name: Install Apache Web Server Debian
         apt: name=apache2 state=latest
-
-      - name: Copy HTML page to Debian Servers
-        copy: src={{ source_file }} dest={{ destin_file }} mode=0555
-        notify: Restart Apache Debian
-
       - name: Start WebServer and make it enable for Debian
         service: name=apache2 state=started enabled=yes
+    when: ansible_os_family == "Debian"
 
-    when: ansible_os_family=="Debian"
+  - name: Generate INDEX.HTML file
+    template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0555
+    notify:
+      - Restart Apache RedHat
+      - Restart Apache Debian
+
+
+  - name: Copy HTML page to RedHat Servers
+    copy: src={{ source_folder}}/{{ item}} dest={{ destin_folder }} mode=0555
+    loop: 
+      - "art-1.jpg"
+      - "art-2.jpg"
+      - "art-3.jpg"
+      - "art-4.jpg"
+    notify:
+      - Restart Apache RedHat
+      - Restart Apache Debian
 
   handlers:
   - name: Restart Apache Debian
     service: name=apache2 state=restarted
+    when: ansible_os_family=="Debian"
 
   - name: Restart Apache RedHat
     service: name=httpd state=restarted
+    when: ansible_os_family=="RedHat"
