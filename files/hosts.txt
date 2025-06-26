@@ -1,6 +1,12 @@
-[PROD_SERVERS]
+[PROD]
 linux1 ansible_host=192.168.132.27   owner=Petya
+
+[STAGING]
 linux2 ansible_host=192.168.132.222  owner=Vasya
+
+[ALL_LINUX:children]
+PROD
+STAGING
 
 #[ALMA_SERVERS]
 #alma-linux ansible_host=192.168.132.247
